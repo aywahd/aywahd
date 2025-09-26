@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lebenslauf - Mohammed Benali</title>
+    <style>
+        /* Styles pour le CV PDF */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .cv-container {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 20mm;
+            position: relative;
+        }
+        
+        /* En-tête du CV */
+        .cv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2c7873;
+        }
+        
+        .personal-info h1 {
+            font-size: 28px;
+            color: #2c7873;
+            margin-bottom: 5px;
+        }
+        
+        .personal-info h2 {
+            font-size: 18px;
+            color: #666;
+            font-weight: normal;
+        }
+        
+        .contact-info {
+            text-align: right;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .contact-info div {
+            margin-bottom: 3px;
+        }
+        
+        /* Sections du CV */
+        .cv-section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            color: #2c7873;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            font-weight: bold;
+        }
+        
+        /* Profil professionnel */
+        .profile-text {
+            text-align: justify;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        /* Expérience professionnelle */
+        .experience-item, .education-item {
+            margin-bottom: 15px;
+            page-break-inside: avoid;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .item-title {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .item-date {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .item-subtitle {
+            font-style: italic;
+            color: #2c7873;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .item-description {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* Compétences */
+        .skills-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .skill-category {
+            margin-bottom: 10px;
+        }
+        
+        .skill-category h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .skill-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+            font-size: 13px;
+        }
+        
+        .skill-name {
+            flex: 1;
+        }
+        
+        .skill-level {
+            width: 100px;
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        .skill-level-fill {
+            height: 100%;
+            background-color: #2c7873;
+            border-radius: 4px;
+        }
+        
+        /* Langues */
+        .languages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .language-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .language-name {
+            width: 100px;
+            font-weight: bold;
+        }
+        
+        .language-level {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        /* Pied de page */
+        .cv-footer {
+            position: absolute;
+            bottom: 20mm;
+            left: 20mm;
+            right: 20mm;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 10px;
+        }
+        
+        /* Bouton de téléchargement */
+        .download-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2c7873;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .download-btn:hover {
+            background: #1f5c57;
+        }
+        
+        /* Styles d'impression */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .cv-container {
+                width: 100%;
+                height: 100%;
+                box-shadow: none;
+                padding: 15mm;
+            }
+            
+            .download-btn {
+                display: none;
+            }
+        }
+    </style>
+    <!-- Bibliothèque pour générer le PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <button class="download-btn" onclick="generatePDF()">
+        <i class="fas fa-download"></i> PDF Herunterladen
+    </button>
+
+    <div class="cv-container" id="cv-content">
+        <!-- En-tête du CV -->
+        <div class="cv-header">
+            <div class="personal-info">
+                <h1>MOHAMMED BENALI</h1>
+                <h2>Pflegefachmann</h2>
+            </div>
+            <div class="contact-info">
+                <div>Rabat, Marokko</div>
+                <div>+212 6 12 34 56 78</div>
+                <div>m.benali@example.com</div>
+                <div>31 Jahre alt, Ledig</div>
+            </div>
+        </div>
+        
+        <!-- Profil professionnel -->
+        <div class="cv-section">
+            <div class="section-title">PROFIL</div>
+            <div class="profile-text">
+                Engagierter und einfühlsamer Pflegefachmann mit mehrjähriger Erfahrung in der Patientenbetreuung. 
+                Besitze fundierte Kenntnisse in Grund- und Behandlungspflege sowie ausgeprägte interkulturelle Kompetenzen. 
+                Strebe eine Ausbildung in Deutschland an, um von den modernen Pflegestandards zu profitieren und mich 
+                beruflich weiterzuentwickeln. Zeichne mich durch hohe Motivation, Teamfähigkeit und Belastbarkeit aus.
+            </div>
+        </div>
+        
+        <!-- Expérience professionnelle -->
+        <div class="cv-section">
+            <div class="section-title">BERUFSERFAHRUNG</div>
+            
+            <div class="experience-item">
+                <div class="item-header">
+                    <div class="item-title">Pflegefachmann</div>
+                    <div class="item-date">2020 - 2022</div>
+                </div>
+                <div class="item-subtitle">Krankenhaus Ibn Sina, Rabat, Marokko</div>
+                <div class="item-description">
+                    <ul>
+                        <li>Durchführung der Grund- und Behandlungspflege auf der Station für Innere Medizin</li>
+                        <li>Überwachung des Gesundheitszustands von Patienten und Dokumentation</li>
+                        <li>Zusammenarbeit im interdisziplinären Team mit Ärzten und Therapeuten</li>
+                        <li>Angehörigenberatung und psychosoziale Unterstützung</li>
+                        <li>Durchführung von Vitalzeichenkontrollen und Verbandswechseln</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="experience-item">
+                <div class="item-header">
+                    <div class="item-title">Praktikum - Pflegefachmann</div>
+                    <div class="item-date">2019 - 2020</div>
+                </div>
+                <div class="item-subtitle">Klinik Cheikh Zaid, Rabat, Marokko</div>
+                <div class="item-description">
+                    <ul>
+                        <li>Praktische Ausbildung in verschiedenen Fachbereichen: Chirurgie, Pädiatrie, Geriatrie</li>
+                        <li>Unterstützung bei der Patientenaufnahme und -entlassung</li>
+                        <li>Mitarbeit bei der Medikamentenverabreichung unter Aufsicht</li>
+                        <li>Dokumentation pflegerischer Maßnahmen</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Formation -->
+        <div class="cv-section">
+            <div class="section-title">AUSBILDUNG</div>
+            
+            <div class="education-item">
+                <div class="item-header">
+                    <div class="item-title">Staatsexamen Pflegefachmann</div>
+                    <div class="item-date">2017 - 2020</div>
+                </div>
+                <div class="item-subtitle">Institut de Formation aux Carrières de Santé, Casablanca</div>
+                <div class="item-description">
+                    Abschluss mit Auszeichnung (Note: 1,8). Theoretische und praktische Ausbildung mit Schwerpunkten 
+                    in Innerer Medizin, Chirurgie, Pädiatrie und Geriatrie.
+                </div>
+            </div>
+            
+            <div class="education-item">
+                <div class="item-header">
+                    <div class="item-title">Deutschkurs B2</div>
+                    <div class="item-date">2022 - laufend</div>
+                </div>
+                <div class="item-subtitle">Goethe-Institut, Rabat</div>
+                <div class="item-description">
+                    Intensivkurs Deutsch mit Fokus auf medizinischer Fachsprache und Kommunikation im Pflegekontext. 
+                    Voraussichtlicher Abschluss: Juni 2023.
+                </div>
+            </div>
+            
+            <div class="education-item">
+                <div class="item-header">
+                    <div class="item-title">Abitur (Wissenschaftlicher Zweig)</div>
+                    <div class="item-date">2016</div>
+                </div>
+                <div class="item-subtitle">Lycée Moulay Youssef, Rabat</div>
+                <div class="item-description">
+                    Abschluss mit gutem Erfolg. Schwerpunktfächer: Biologie, Chemie, Physik.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Compétences -->
+        <div class="cv-section">
+            <div class="section-title">FACHKOMPETENZEN</div>
+            <div class="skills-container">
+                <div class="skill-column">
+                    <div class="skill-category">
+                        <h4>Pflegerische Kompetenzen</h4>
+                        <div class="skill-item">
+                            <span class="skill-name">Grundpflege</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Behandlungspflege</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Dokumentation</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Patientenüberwachung</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 88%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Medizinische Kenntnisse</h4>
+                        <div class="skill-item">
+                            <span class="skill-name">Anatomie/Physiologie</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Krankheitslehre</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Medikamentenlehre</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Hygienemanagement</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-column">
+                    <div class="skill-category">
+                        <h4>Persönliche Stärken</h4>
+                        <div class="skill-item">
+                            <span class="skill-name">Empathie</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Teamfähighkeit</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Belastbarkeit</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Interkulturelle Kompetenz</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 92%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>IT-Kenntnisse</h4>
+                        <div class="skill-item">
+                            <span class="skill-name">MS Office</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Krankenhaussoftware</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Dokumentationssysteme</span>
+                            <div class="skill-level">
+                                <div class="skill-level-fill" style="width: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Langues -->
+        <div class="cv-section">
+            <div class="section-title">SPRACHKENNTNISSE</div>
+            <div class="languages">
+                <div class="language-item">
+                    <span class="language-name">Arabisch:</span>
+                    <span class="language-level">Muttersprache</span>
+                </div>
+                <div class="language-item">
+                    <span class="language-name">Französisch:</span>
+                    <span class="language-level">Fließend (C1)</span>
+                </div>
+                <div class="language-item">
+                    <span class="language-name">Deutsch:</span>
+                    <span class="language-level">Gute Kenntnisse (B2)</span>
+                </div>
+                <div class="language-item">
+                    <span class="language-name">Englisch:</span>
+                    <span class="language-level">Grundkenntnisse (A2)</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Certifications -->
+        <div class="cv-section">
+            <div class="section-title">WEITERBILDUNGEN & ZERTIFIKATE</div>
+            <div class="item-description">
+                <ul>
+                    <li>Erste-Hilfe-Zertifikat (2022) - Marokkanisches Rotes Kreuz</li>
+                    <li>Hygienschulung nach RKI-Richtlinien (2021)</li>
+                    <li>Workshop: Interkulturelle Kommunikation im Gesundheitswesen (2020)</li>
+                    <li>Grundkurs Palliativpflege (2019)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Hobbys -->
+        <div class="cv-section">
+            <div class="section-title">INTERESSEN</div>
+            <div class="item-description">
+                Lesen (Fachliteratur, Biografien), Fußball, Freiwilligenarbeit in der Gemeinde, 
+                Kochen, Reisen und Kennenlernen anderer Kulturen.
+            </div>
+        </div>
+        
+        <!-- Pied de page -->
+        <div class="cv-footer">
+            Mohammed Benali - Lebenslauf - Stand: März 2023
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour générer le PDF
+        function generatePDF() {
+            const element = document.getElementById('cv-content');
+            const opt = {
+                margin: 10,
+                filename: 'Lebenslauf_Mohammed_Benali.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save();
+        }
+        
+        // Téléchargement automatique après 2 secondes (optionnel)
+        window.onload = function() {
+            setTimeout(() => {
+                // Désactivé par défaut - décommentez la ligne suivante pour l'activer
+                // generatePDF();
+            }, 2000);
+        };
+    </script>
+</body>
+</html>
